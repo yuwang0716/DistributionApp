@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x150"
+        android:background="?attr/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/x20">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="汇总"
+            android:textColor="@color/colorText_title"
+            android:textSize="@dimen/x30" />
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1">
+
+                    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+                        android:id="@+id/today_orders_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorText_title"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@mipmap/icon_total_todayorder"
+                            android:gravity="center_vertical"
+                            android:paddingRight="39dp"
+                            android:text="  今日订单"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/today_orders"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_total_detail_left"
+                            android:drawableRight="@mipmap/icon_total_detail_right"
+                            android:text="  查看详情  "
+                            android:textSize="12sp"/>
+                    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1">
+
+                    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+                        android:id="@+id/cancel_orders_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorText_title"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@mipmap/icon_total_cancel"
+                            android:gravity="center_vertical"
+                            android:paddingRight="39dp"
+                            android:text="  今日取消"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/cancel_orders"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_total_detail_left"
+                            android:drawableRight="@mipmap/icon_total_detail_right"
+                            android:text="  查看详情  "
+                            android:textSize="12sp"/>
+                    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1">
+
+                    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+                        android:id="@+id/todayincome_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorText_title"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@mipmap/icon_total_todayincone"
+                            android:gravity="center_vertical"
+                            android:paddingRight="39dp"
+                            android:text="  今日收入"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/todayincome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_total_detail_left"
+                            android:drawableRight="@mipmap/icon_total_detail_right"
+                            android:text="  查看详情  "
+                            android:textSize="12sp"/>
+                    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1">
+
+                    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+                        android:id="@+id/todayloss_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:background="@color/colorText_title"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@mipmap/icon_total_loss"
+                            android:gravity="center_vertical"
+                            android:paddingRight="39dp"
+                            android:text="  今日损失"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/todayloss"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_total_detail_left"
+                            android:drawableRight="@mipmap/icon_total_detail_right"
+                            android:text="  查看详情  "
+                            android:textSize="12sp"/>
+                    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1">
+
+                    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+                        android:id="@+id/totalincome_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorText_title"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@mipmap/icon_total_extract"
+                            android:gravity="center_vertical"
+                            android:paddingRight="39dp"
+                            android:text="  累计收入"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/totalincome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_total_detail_left"
+                            android:drawableRight="@mipmap/icon_total_detail_right"
+                            android:text="  查看详情  "
+                            android:textSize="12sp"/>
+                    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1">
+
+                    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+                        android:id="@+id/mile_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorText_title"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@mipmap/icon_total_mileage"
+                            android:gravity="center_vertical"
+                            android:paddingRight="39dp"
+                            android:text="  累计里程"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:id="@+id/mile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/icon_total_detail_left"
+                            android:drawableRight="@mipmap/icon_total_detail_right"
+                            android:text="  查看详情  "
+                            android:textSize="12sp"/>
+                    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorText_title"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp" >
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+
+                                android:drawableLeft="@mipmap/icon_total_workpieceratio"
+                                android:gravity="center_vertical"
+                                android:paddingRight="39dp"
+                                android:text="  工作效率"
+                                android:textSize="18sp"/>
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorText_title"
+                        android:paddingBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/punctuality"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal" />
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/colorText_get" />
+
+                        <TextView
+                            android:id="@+id/complete"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

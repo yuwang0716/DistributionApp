@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="下单时间"/>
+                <TextView
+                    android:id="@+id/date_start"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paystatebutton"
+                    android:drawableRight="@mipmap/order_more_celendar"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/order_more_line"/>
+                <TextView
+                    android:id="@+id/date_end"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paystatebutton"
+                    android:drawableRight="@mipmap/order_more_celendar"/>
+                <Button
+                    android:id="@+id/order_more_loseefficacy_query"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:text="查询"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/colorText_title"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/ordertypebutton"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/more_loseorder_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+</LinearLayout>

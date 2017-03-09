@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorText_title">
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_alignParentRight="true"
+            android:textSize="10sp"/>
+    </RelativeLayout>
+    <include layout="@layout/item_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="60dp"
+            android:background="@color/colorText_title">
+            <TextView
+                android:id="@+id/countdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="倒计时"
+                android:textSize="@dimen/x24"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp">
+                <ProgressBar
+                    style="@style/StyleProgressBarMini"
+                    android:id="@+id/distributing_progressbar"
+                    android:layout_width="200dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/shape_progressbar_bg"
+                    android:max="10"
+                    android:progress="10"/>
+
+                <TextView
+                    android:id="@+id/outtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/x24"
+                    />
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/intime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10分钟"
+                android:textSize="@dimen/x24"/>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="7dp"
+        android:background="@color/colorText_title">
+        <Button
+            android:id="@+id/distributed"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="完成配送"
+            android:textSize="@dimen/x24"
+            android:textColor="@color/colorText_title"
+            android:background="@drawable/reseizebutton"/>
+    </LinearLayout>
+</LinearLayout>

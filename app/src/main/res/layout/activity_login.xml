@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/login"
+    tools:context="com.liuhesan.app.distributionapp.ui.personcenter.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="@dimen/x561"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="@dimen/x120"
+        android:layout_marginRight="100dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="账号："
+            android:textColor="@color/colorText_get"
+            android:autoLink="all"/>
+        <EditText
+            android:id="@+id/user"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/x561"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x120"
+        android:layout_marginRight="100dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码："
+            android:textColor="@color/colorText_get"/>
+
+        <EditText
+            android:id="@+id/pwd"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+    </LinearLayout>
+    <Button
+        android:id="@+id/login"
+        android:layout_width="@dimen/x510"
+        android:layout_height="@dimen/x90"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/reseizebutton"
+        android:text="登录"
+        android:textColor="@color/colorText_title"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x120"
+        android:layout_marginRight="90dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/forget_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="忘记密码"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/colorText_get"
+            android:textSize="10sp"/>
+    </RelativeLayout>
+</LinearLayout>

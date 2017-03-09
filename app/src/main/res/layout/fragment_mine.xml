@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:background="?attr/colorPrimary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="我的"
+                android:textSize="@dimen/x30"
+                android:textColor="@color/colorText_title" />
+        </android.support.v7.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@mipmap/mine_img_end">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_alignParentBottom="true"
+                android:background="#60000000">
+
+                <TextView
+                    android:id="@+id/finishorders"
+                    android:drawableTop="@mipmap/icon_mine_finishorders"
+                    style="@style/mine_stylefirst" />
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#60FFFFFF" />
+
+                <TextView
+                    android:id="@+id/totalmile"
+                    android:drawableTop="@mipmap/icon_mine_totalmile"
+                    style="@style/mine_stylefirst" />
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#60FFFFFF" />
+                <TextView
+                    android:id="@+id/totalmoney"
+                    android:drawableTop="@mipmap/icon_mine_totalmoney"
+                    style="@style/mine_stylefirst" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <com.liuhesan.app.distributionapp.widget.CircleImageView
+                    app:border_width="5dp"
+                    app:border_color="#0000"
+                    android:src="@mipmap/default_personal_image"
+                    android:id="@+id/circle_image"
+                    android:layout_centerInParent="true"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorText_title" />
+
+                    <TextView
+                        android:id="@+id/mine_phone_verification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:drawableLeft="@mipmap/mine_phone_verification"
+                        android:text="  手机认证"
+                        android:textColor="@color/colorText_title" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+        <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+            android:layout_marginTop="16dp"
+            android:id="@+id/mine_notification"
+            style="@style/mine_style_layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_mine_notification"
+                android:text="   通知中心  " />
+            <ImageView
+                android:id="@+id/mine_msgdot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/msg_tips"
+                android:visibility="gone"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/icon_mine_details" />
+        </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color" />
+
+        <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+            android:id="@+id/mine_myproperty"
+            style="@style/mine_style_layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_mine_myincome"
+                android:text="   我的资产" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/icon_mine_details" />
+        </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color" />
+        <!--我的评价后期加-->
+        <LinearLayout
+            style="@style/mine_style_layout"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_mine_assessment"
+                android:text="   我的评价" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:drawableRight="@mipmap/icon_mine_details" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:visibility="gone"/>
+        <!--邀请好友后期加-->
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            style="@style/mine_style_layout"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_mine_addfriend"
+                android:text="   邀请好友" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:drawableRight="@mipmap/icon_mine_details" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:visibility="gone"/>
+
+        <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+            android:id="@+id/complete_details"
+            style="@style/mine_style_layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_mine_identifier"
+                android:text="   个人资料" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/icon_mine_details" />
+        </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color" />
+
+        <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+            android:id="@+id/systemsetting"
+            android:layout_marginTop="16dp"
+            style="@style/mine_style_layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_mine_setting"
+                android:text="   系统设置" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/icon_mine_details" />
+        </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color" />
+    </LinearLayout>
+</ScrollView>

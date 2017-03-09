@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#28AAE3</color>
+    <color name="colorPrimaryDark">#28AAE3</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorFragment">#F5F5F6</color>
+    <color name="colorText_get">#28AAE3</color>
+    <color name="colorText_send">#4FCB64</color>
+    <color name="colorText_title">#FFFFFF</color>
+    <color name="line_color">#E5E5E5</color>
+    <color name="colortext_red">#CC0000</color>
+    <color name="colortext_orange">#F08C3F</color>
+    <color name="colortext_yellow">#F8EA09</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="topbar_3">#339EFE</color>
+    <color name="line">#dddddd</color>
+    <color name="text_10">#333333</color>
+    <color name="text_11">#999999</color>
+    <color name="gray_bg">#f8f8f8</color>
+    <color name="textColorHint">#d2d5d4</color>
+</resources>

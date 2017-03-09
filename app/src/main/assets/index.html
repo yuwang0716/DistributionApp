@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <script type="text/javascript">
+	
+
+	function getValues(users){
+	   var user = document.getElementById("user").value;
+		var pwd = document.getElementById("pwd").value;
+		var imgtext = document.getElementById("imgtext").value;
+   		var pwd = BaiduEncrypt.simplencrypt(pwd);
+		window.app.getValues(users);
+	}
+
+	function initTitle(img,jj){
+	        document.getElementById("user").value = img;
+	}
+
+  var BaiduEncrypt = {
+    a:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+    simplencrypt: function(r){if(r){r=this.compile(r);var e=new RegExp("=","g");return r=r.replace(e,""),r=r.split("").reverse().join("")}},
+    compile: function(r){var e,t,o,c,i,h;a=this.a;for(o=r.length,t=0,e="";o>t;){if(c=255&r.charCodeAt(t++),t==o){e+=a.charAt(c>>2),e+=a.charAt((3&c)<<4),e+="==";break}if(i=r.charCodeAt(t++),t==o){e+=a.charAt(c>>2),e+=a.charAt((3&c)<<4|(240&i)>>4),e+=a.charAt((15&i)<<2),e+="=";break}h=r.charCodeAt(t++),e+=a.charAt(c>>2),e+=a.charAt((3&c)<<4|(240&i)>>4),e+=a.charAt((15&i)<<2|(192&h)>>6),e+=a.charAt(63&h)}return e}
+  };
+
+
+
+    </script>
+		<style>
+		body{margin:0;padding:0;font-family:"微软雅黑";position:relative;font-size:20px;}
+a{ text-decoration:none;color:#666;}
+*{font-family:"微软雅黑";}
+ul,ul li,dd,h3,dl,dt,p,div,img,table,tr,td,a,input{margin:0;padding:0; list-style-type:none;}
+img,input{border:none;vertical-align:top;}
+.page{width:100%;height:320px;position:relative;left:0;top:0;font-size:26px;z-index:1;}
+
+		.continer{width: 85%;border: 1px solid #f00;border-radius: 5px;margin: 30% auto 0 auto; position: relative;}
+		.login_logo span.del{position: absolute;right: 10px;top: 73px;}
+		.login_logo{height: 120px;display: block;margin: 0 auto;position: relative; margin-top: -60px;background: url(./img/baidu_03.png) no-repeat center top;}
+		.continer dl{width: 80%;margin:6% auto;height: 37px;}
+		.continer dl dt{min-width: 14px;min-height: 14px;max-height: 37px;max-width: 37px;float: left;width: 9%;}
+		.continer dl dd{height: 37px;max-width: 90%;float: right;min-width: 82%;}
+		.continer dl dt img{min-width: 14px;min-height: 14px;max-height: 30px;max-width: 30px;}
+		.continer dl dd input{background: url(./img/baidu_10.png) no-repeat right 7px; height: 37px;float: left;border-bottom: 1px solid #f00;width: 100%; font-size: 0.5rem;;}
+		.continer dl dd input:focus{outline: none;}
+		.captcah{float: right;}
+		.continer dl dd input.captcah_in{background: none;width: 40%;}
+		</style>
+	</head>
+	<body>
+		<section  class="continer">
+			<p class="login_logo">
+			<span class="del"><img src="img/baidu_10.png"/></span>
+			</p>
+			<form action="" method="post">
+				<dl style="margin-top: 50px;">
+					<dt><img src="img/baidu_07.png"/></dt>
+					<dd><input type="" name="" id="user" value=""  placeholder="请输入您的平台账号"/></dd>
+				</dl>
+				<dl>
+					<dt><img src="img/baidu_14.png" height="37" width="37"/></dt>
+					<dd><input type="" name="" id="pwd" value="" placeholder="请输入您的密码"/></dd>
+				</dl>
+				<dl>
+					<dt><img src="img/baidu_14.png" height="37" width="37"/></dt>
+					<dd style="width: 62%;"><input type="" name="" id="imgtext" value="" placeholder="请输入您的验证码" class="captcah_in"/><img src="" width="55%" height="33" class="captcah" id="myimg"/></dd>
+				</dl>
+				<input type="button" value="登陆" onclick="getValues('111111')"/>
+
+			</form>
+		</section >
+	</body>
+</html>

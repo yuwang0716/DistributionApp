@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">66配送</string>
+    <!--main-->
+    <string name="order">订单</string>
+    <string name="total">汇总</string>
+    <string name="mine">我的</string>
+
+
+    <string name="entry">立即体验</string>
+    <!--订单-->
+    <array name="order_titles">
+        <item>抢单</item>
+        <item>待取货</item>
+        <item>配送中</item>
+        <item>更多</item>
+    </array>
+    <!--订单页面更多-->
+    <string name="finishorder">已完成订单</string>
+    <string name="loseefficacy">失效订单</string>
+    <!--通知中心-->
+    <string name="notification_system">系统信息</string>
+    <string name="notification_merchant">商家信息</string>
+    <!--银行名称-->
+    <array name="bankname">
+        <item>中国工商银行</item>
+        <item>中国银行</item>
+        <item>中国建设银行</item>
+        <item>中国农业银行</item>
+        <item>中国光大银行</item>
+        <item>招商银行</item>
+        <item>中信银行</item>
+        <item>浦发银行</item>
+        <item>广发银行</item>
+        <item>华夏银行</item>
+        <item>交通银行</item>
+        <item>中国民生银行</item>
+        <item>兴业银行</item>
+        <item>平安银行</item>
+    </array>
+</resources>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_system_setting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.liuhesan.app.distributionapp.ui.personcenter.SystemSettingActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:background="?attr/colorPrimary">
+        <ImageButton
+            android:id="@+id/systemsetting_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/mine_back"
+            android:padding="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="系统设置"
+            android:textColor="@color/colorText_title" />
+    </android.support.v7.widget.Toolbar>
+
+    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+        android:id="@+id/systemsetting_changepwd"
+        android:layout_marginTop="16dp"
+        style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改密码" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@mipmap/icon_mine_details" />
+    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color" />
+
+    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+        android:id="@+id/systemsetting_common"
+        style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="通用" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@mipmap/icon_mine_details" />
+    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color" />
+
+    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+        android:id="@+id/systemsetting_clearcache"
+        style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清理缓存" />
+
+        <TextView
+            android:id="@+id/tv_clearcache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:drawableRight="@mipmap/icon_mine_details" />
+    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color" />
+
+    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+        android:id="@+id/systemsetting_about"
+        style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@mipmap/icon_mine_details" />
+    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color" />
+    <Button
+        android:id="@+id/systemsetting_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="退出登录"
+        android:textColor="@color/colorText_title"
+        android:background="@drawable/reseizebutton"/>
+</LinearLayout>

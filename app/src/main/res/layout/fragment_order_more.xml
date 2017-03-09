@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/finishorder"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="@string/finishorder"
+            android:background="@drawable/finishorderbutton"
+            android:textColor="@color/colorText_title"/>
+        <Button
+            android:id="@+id/loseefficacy"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="@string/loseefficacy"
+            android:background="@drawable/loseefficacybutton"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+    <com.liuhesan.app.distributionapp.widget.NoScrollViewPager
+        android:id="@+id/more_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.liuhesan.app.distributionapp.widget.NoScrollViewPager>
+
+</LinearLayout>

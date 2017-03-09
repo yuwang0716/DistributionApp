@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorText_title"
+    android:orientation="vertical">
+
+    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+        android:id="@+id/ll_workstate_work"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="30dp">
+
+        <RadioButton
+            android:id="@+id/rb_workstate_work"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="4dp"
+            android:button="@drawable/checkbox_work" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/tv_workstate_work"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="工作中" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="接受新订单与提示，正常接单"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color" />
+
+    <com.liuhesan.app.distributionapp.widget.LinearLayoutForButton
+        android:id="@+id/ll_workstate_rest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="30dp">
+
+        <RadioButton
+            android:id="@+id/rb_workstate_rest"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="4dp"
+            android:button="@drawable/checkbox_rest" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/tv_workstate_rest"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="休息中" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="拒绝新订单与提示，不能正常接单"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </com.liuhesan.app.distributionapp.widget.LinearLayoutForButton>
+</RadioGroup>

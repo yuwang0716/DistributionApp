@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_bankcard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.liuhesan.app.distributionapp.ui.personcenter.MyBankcardActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:paddingTop="20dp">
+
+        <ImageButton
+            android:id="@+id/my_bankcard_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/mine_back"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="我的银行卡"
+            android:textColor="@color/colorText_title" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="仅限持卡本人操作，请如实填写以下信息用于银行验证" />
+
+    <LinearLayout style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="银行名称"
+            android:gravity="right"/>
+
+        <Spinner
+            android:id="@+id/my_bankcard_bankname"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
+            android:entries="@array/bankname"/>
+    </LinearLayout>
+    <LinearLayout style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:text="持卡人"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
+            />
+
+        <EditText
+            android:id="@+id/my_bankcard_cardholder"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:inputType="textCapCharacters"
+            android:maxLines="1"
+            android:background="@drawable/bg_edittext"/>
+    </LinearLayout>
+
+    <LinearLayout style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:text="储蓄卡卡号"
+            android:layout_marginRight="20dp"
+            android:gravity="right"/>
+
+        <EditText
+            android:id="@+id/my_bankcard_cardnums"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:inputType="number"
+            android:maxLines="1"
+            android:background="@drawable/bg_edittext"/>
+    </LinearLayout>
+    <LinearLayout style="@style/mine_style_layout">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:text="身份证"
+            android:gravity="right"
+            android:layout_marginRight="20dp"/>
+
+        <EditText
+            android:id="@+id/my_bankcard_idnumber"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:digits="1234567890x"
+            android:maxLines="1"
+            android:background="@drawable/bg_edittext"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/my_bankcard_sure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="确认绑定"
+        android:textSize="20sp"
+        android:textColor="@color/colorText_title"
+        android:background="@drawable/reseizebutton"/>
+</LinearLayout>
