@@ -183,9 +183,6 @@
             android:name="com.amap.api.v2.apikey"
             android:value="aee712ca515218da0f83fccdad6ee25b" />
 
-        <service
-            android:name=".service.LocationService"
-            android:exported="false" />
         <service android:name="com.amap.api.location.APSService"/>
         <!--高的配置   end-->
 

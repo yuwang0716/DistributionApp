@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.liuhesan.app.distributionapp.R;
 import com.liuhesan.app.distributionapp.adapter.ReseizeOrderAdapter;
 import com.liuhesan.app.distributionapp.bean.Order;
-import com.liuhesan.app.distributionapp.service.LocationService;
 import com.liuhesan.app.distributionapp.ui.personcenter.LoginActivity;
 import com.liuhesan.app.distributionapp.utility.AppManager;
 import com.liuhesan.app.distributionapp.utility.ReseizeOrderJson;
@@ -66,7 +65,7 @@ public class ReseizeOrderFragment extends Fragment {
     private boolean isSound, isShake;
     private List<Order> data;
     private boolean isRegisterMessageReceive;
-
+    private Intent intent_location;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -247,7 +246,9 @@ public class ReseizeOrderFragment extends Fragment {
                             sharedPreferences.edit().clear().commit();
                             startActivity(new Intent(activity, LoginActivity.class));
                             Toast.makeText(activity, "你的账号在其他地方登录，非本人登录，请及时修改密码", Toast.LENGTH_SHORT).show();
-                            activity.stopService(new Intent(activity, LocationService.class));
+                            intent_location = new Intent("com.liuhesan.app.distributionapp.LOCATION");
+                            intent_location.putExtra("isLocation",false);
+                            localBroadcastManager.sendBroadcast(intent_location);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

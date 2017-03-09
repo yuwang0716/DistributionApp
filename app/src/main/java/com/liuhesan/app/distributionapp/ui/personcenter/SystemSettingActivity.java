@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.liuhesan.app.distributionapp.R;
-import com.liuhesan.app.distributionapp.service.LocationService;
 import com.liuhesan.app.distributionapp.utility.AppManager;
 import com.liuhesan.app.distributionapp.utility.DataCleanManager;
 
@@ -23,11 +23,14 @@ public class SystemSettingActivity extends AppCompatActivity implements View.OnC
     private LinearLayout clearData,common,aboutus;
     private Button exit;
     private TextView tv_clearData;
+    private Intent intent_location;
+    private LocalBroadcastManager localBroadcastManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_setting);
         AppManager.getAppManager().addActivity(SystemSettingActivity.this);
+        localBroadcastManager = LocalBroadcastManager.getInstance(SystemSettingActivity.this);
         initView();
     }
 
@@ -75,7 +78,9 @@ public class SystemSettingActivity extends AppCompatActivity implements View.OnC
                 AppManager.getAppManager().finishAllActivity();
                 NotificationManager manger = (NotificationManager)this.getSystemService(NOTIFICATION_SERVICE);
                 manger.cancelAll();
-                stopService(new Intent(SystemSettingActivity.this,LocationService.class));
+                intent_location = new Intent("com.liuhesan.app.distributionapp.LOCATION");
+                intent_location.putExtra("isLocation",false);
+                localBroadcastManager.sendBroadcast(intent_location);
                 break;
             case R.id.systemsetting_about:
                 startActivity(new Intent(SystemSettingActivity.this,AboutUsActivity.class));

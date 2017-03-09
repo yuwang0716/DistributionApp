@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,18 +21,30 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.liuhesan.app.distributionapp.R;
 import com.liuhesan.app.distributionapp.bean.Tab;
 import com.liuhesan.app.distributionapp.fragment.MineFragment;
 import com.liuhesan.app.distributionapp.fragment.OrderFragment;
 import com.liuhesan.app.distributionapp.fragment.TotalFragment;
+import com.liuhesan.app.distributionapp.utility.API;
 import com.liuhesan.app.distributionapp.utility.AppManager;
 import com.liuhesan.app.distributionapp.widget.FragmentTabHost;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -44,11 +57,18 @@ public class MainActivity extends AppCompatActivity {
     private boolean isReddot_news,isReddot_order;
     public static final String RECEIVER_ACTION = "location_in_background";
     private LocalBroadcastManager localBroadcastManager;
-    private IntentFilter intentFilter;
+    private IntentFilter intentFilter,intentFilter_location;
     private ReseizeReceive localReceive;
+    private LocationReceive locationReceive;
     private String notification = "0";
     private String timeout;
-
+    private boolean isLocation;
+    private static AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
+    private double latitude;
+    private double longitude;
+    private Timer timer;
+    private TimerTask timerTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction("com.liuhesan.app.distributionapp.ISREDDOTNEWS");
         localReceive = new ReseizeReceive();
         localBroadcastManager.registerReceiver(localReceive,intentFilter);
+
+        //定位开启
+        intentFilter_location = new IntentFilter();
+        intentFilter_location.addAction("com.liuhesan.app.distributionapp.LOCATION");
+        locationReceive = new LocationReceive();
+        localBroadcastManager.registerReceiver(locationReceive,intentFilter_location);
 
         AppManager.getAppManager().addActivity(MainActivity.this);
         JPushInterface.init(getApplicationContext());
@@ -166,11 +192,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    class  LocationReceive extends BroadcastReceiver{
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isLocation = intent.getBooleanExtra("isLocation",false);
+            if (isLocation){
+                startLocation();
+            }else {
+                stopLocation();
+            }
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         localBroadcastManager.unregisterReceiver(localReceive);
+        localBroadcastManager.unregisterReceiver(locationReceive);
     }
 
     @Override
@@ -195,4 +233,86 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    /**
+     * 启动定位
+     */
+    void startLocation() {
+        stopLocation();
+
+        if (null == mLocationClient) {
+            mLocationClient = new AMapLocationClient(this.getApplicationContext());
+        }
+
+        mLocationOption = new AMapLocationClientOption();
+        // 使用连续
+        mLocationOption.setOnceLocation(false);
+        // 每10秒定位一次
+        mLocationOption.setInterval(1000);
+        mLocationOption.setHttpTimeOut(30000);
+        // 地址信息
+        mLocationOption.setNeedAddress(true);
+        mLocationOption.setLocationCacheEnable(false);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.setLocationListener(locationListener);
+        mLocationClient.startLocation();
+        timer = new Timer();
+        timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                if (latitude != 0 && longitude != 0) {
+                    if (isLocation){
+                        OkGo.post(API.BASEURL + "deliver/logSteps/")
+                                .tag(this)
+                                .params("latitude", latitude)
+                                .params("longitude", longitude)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                    }
+                                });
+                    }
+
+                }
+            }
+        };
+    }
+    /**
+     * 停止定位
+     */
+    void stopLocation() {
+        if (null != mLocationClient) {
+            mLocationClient.stopLocation();
+        }
+    }
+    AMapLocationListener locationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (null != aMapLocation) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    latitude = aMapLocation.getLatitude();
+                    longitude = aMapLocation.getLongitude();
+                    DecimalFormat df = new DecimalFormat("0.0000");
+                    latitude = Double.parseDouble(df.format(latitude));
+                    longitude = Double.parseDouble(df.format(longitude));
+                    SharedPreferences sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putString("latitude", Double.toString(latitude));
+                    edit.putString("longitude", Double.toString(longitude));
+                    edit.commit();
+                        timer.schedule(timerTask,1000,10000);
+
+
+                } else {
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+
+                }
+
+            }
+
+        }
+    };
 }

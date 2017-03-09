@@ -18,7 +18,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,7 +30,6 @@ import android.widget.TextView;
 
 import com.cjj.MaterialRefreshLayout;
 import com.liuhesan.app.distributionapp.R;
-import com.liuhesan.app.distributionapp.service.LocationService;
 import com.liuhesan.app.distributionapp.utility.API;
 import com.liuhesan.app.distributionapp.utility.HookViewClickUtil;
 import com.liuhesan.app.distributionapp.utility.ToastUtil;
@@ -68,7 +66,7 @@ public class OrderFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences sharedPreferences;
     private LinearLayout ll_work,ll_rest;
     private LocalBroadcastManager localBroadcastManager;
-    private Intent intent;
+    private Intent intent ,intent_location;
     private IntentFilter intentFilter;
     private NotificationReceive notificationReceive;
 
@@ -142,22 +140,22 @@ public class OrderFragment extends Fragment implements View.OnClickListener {
         //工作状态
         sharedPreferences = activity.getSharedPreferences("login", Context.MODE_PRIVATE);
         bt_wrokstate = (ImageButton) view.findViewById(R.id.order_workstate);
-        intent = new Intent("com.liuhesan.app.distributionapp.WorkState");
+        this.intent = new Intent("com.liuhesan.app.distributionapp.WorkState");
+        intent_location = new Intent("com.liuhesan.app.distributionapp.LOCATION");
         if (sharedPreferences.getInt("status",0) == 1){
-
                 bt_wrokstate.setBackground(activity.getResources().getDrawable(R.mipmap.toolbar_workstate));
                 workstate = true;
-                activity.startService(new Intent(activity, LocationService.class));
-                intent.putExtra("workstate",true);
-                localBroadcastManager.sendBroadcast(intent);
-
+                this.intent.putExtra("workstate",true);
+                intent_location.putExtra("isLocation",true);
         }else {
+
             bt_wrokstate.setBackground(activity.getResources().getDrawable(R.mipmap.toolbar_reststate));
             workstate = false;
-            activity.stopService(new Intent(activity, LocationService.class));
-            intent.putExtra("workstate",false);
-            localBroadcastManager.sendBroadcast(intent);
+            this.intent.putExtra("workstate",false);
+            intent_location.putExtra("isLocation",false);
         }
+        localBroadcastManager.sendBroadcast(this.intent);
+        localBroadcastManager.sendBroadcast(intent_location);
         bt_wrokstate.setOnClickListener(this);
     }
 
@@ -204,12 +202,13 @@ public class OrderFragment extends Fragment implements View.OnClickListener {
                                     JSONObject jsonObject = new JSONObject(s);
                                     int errno = jsonObject.optInt("errno");
                                     if (errno == 200){
-                                        activity.startService(new Intent(activity, LocationService.class));
                                         SharedPreferences.Editor edit = sharedPreferences.edit();
                                         edit.putInt("status",1);
                                         edit.commit();
                                         intent.putExtra("workstate",true);
                                         localBroadcastManager.sendBroadcast(intent);
+                                        intent_location.putExtra("isLocation",true);
+                                        localBroadcastManager.sendBroadcast(intent_location);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -238,14 +237,14 @@ public class OrderFragment extends Fragment implements View.OnClickListener {
                                     JSONObject jsonObject = new JSONObject(s);
                                     int errno = jsonObject.optInt("errno");
                                     if (errno == 200){
-                                        activity.stopService(new Intent(activity, LocationService.class));
                                         sharedPreferences = activity.getSharedPreferences("login", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor edit = sharedPreferences.edit();
                                         edit.putInt("status",0);
                                         edit.commit();
                                         intent.putExtra("workstate",false);
                                         localBroadcastManager.sendBroadcast(intent);
-                                        Log.i(TAG, sharedPreferences.getInt("status",0)+"onSuccess: ");
+                                        intent_location.putExtra("isLocation",false);
+                                        localBroadcastManager.sendBroadcast(intent_location);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

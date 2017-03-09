@@ -26,7 +26,6 @@ import com.liuhesan.app.distributionapp.utility.API;
 import com.liuhesan.app.distributionapp.utility.ToastUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.BaseRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -112,29 +111,17 @@ public class ReseizeOrderAdapter extends RecyclerView.Adapter<ReseizeOrderAdapte
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
+                                    orders.remove(position);
+                                    notifyDataSetChanged();
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         String errmsg = jsonObject.optString("errmsg");
                                         ToastUtil.showToast(mContext, errmsg);
-                                        orders.remove(position);
-                                        notifyDataSetChanged();
                                         NotificationManager manger = (NotificationManager)mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
                                         manger.cancelAll();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                }
-
-                                @Override
-                                public void onBefore(BaseRequest request) {
-                                    super.onBefore(request);
-                                    holder.queryOrder.setClickable(false);
-                                }
-
-                                @Override
-                                public void onError(Call call, Response response, Exception e) {
-                                    super.onError(call, response, e);
-                                    holder.queryOrder.setClickable(true);
                                 }
                             });
             }
