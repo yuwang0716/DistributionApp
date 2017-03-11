@@ -17,12 +17,18 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RidePath;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkRouteResult;
 import com.liuhesan.app.distributionapp.R;
 import com.liuhesan.app.distributionapp.bean.Order;
 import com.liuhesan.app.distributionapp.ui.personcenter.OrderDetailsActivity;
 import com.liuhesan.app.distributionapp.utility.API;
+import com.liuhesan.app.distributionapp.utility.Distance;
 import com.liuhesan.app.distributionapp.utility.ToastUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -39,6 +45,7 @@ import java.util.TimerTask;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.liuhesan.app.distributionapp.R.id.distance;
 import static com.lzy.okgo.OkGo.getContext;
 
 /**
@@ -87,7 +94,7 @@ public class DistributionOrderAdapter extends BaseAdapter {
            mViewHolder.intime = (TextView) convertView.findViewById(R.id.intime);
             mViewHolder.outtime = (TextView) convertView.findViewById(R.id.outtime);
             mViewHolder.countdown = (TextView) convertView.findViewById(R.id.countdown);
-            mViewHolder.distance = (TextView) convertView.findViewById(R.id.distance);
+            mViewHolder.distance = (TextView) convertView.findViewById(distance);
             mViewHolder.details = (TextView) convertView.findViewById(R.id.details);
             mViewHolder.shop_name = (TextView) convertView.findViewById(R.id.shop_name);
             mViewHolder.sn = (TextView) convertView.findViewById(R.id.sn);
@@ -104,21 +111,7 @@ public class DistributionOrderAdapter extends BaseAdapter {
             convertView = map.get(position);
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        //骑手与取送距离
         final SharedPreferences sharedPreferences = mContext.getSharedPreferences("login", Context.MODE_PRIVATE);
-        double latitude = Double.parseDouble(sharedPreferences.getString("latitude", "0.0"));
-        double longitude = Double.parseDouble(sharedPreferences.getString("longitude", "0.0"));
-
-        LatLng latLng_me = new LatLng(latitude, longitude);
-        LatLng latLng_shop = new LatLng(orders.get(position).getPoi_lat(), orders.get(position).getPoi_lng());
-        LatLng latLng_client = new LatLng(orders.get(position).getLat(), orders.get(position).getLng());
-
-        DecimalFormat df = new DecimalFormat("0.00");
-        String distance_shop = df.format(AMapUtils.calculateLineDistance(latLng_me, latLng_shop)/1000);
-        String distance_client = df.format(AMapUtils.calculateLineDistance(latLng_shop, latLng_client)/1000);
-        String str_distance = "我\t\t<font color='#28AAE3'>-" + distance_shop + "km-</font>\t\t取\t\t<font color='#28AAE3'>-" + distance_client + "km-</font>\t\t送";
-        mViewHolder.distance.setText(Html.fromHtml(str_distance));
-
         //倒计时
          final Timer timer = new Timer();
         final int timeout = sharedPreferences.getInt("timeout", 0) * 60;
@@ -184,6 +177,101 @@ public class DistributionOrderAdapter extends BaseAdapter {
                 }
             }
         }
+
+
+        //骑手与取送距离
+
+        double latitude = Double.parseDouble(sharedPreferences.getString("latitude", "0.0"));
+        double longitude = Double.parseDouble(sharedPreferences.getString("longitude", "0.0"));
+
+        final DecimalFormat df = new DecimalFormat("0.00");
+        LatLonPoint point_me = new LatLonPoint(latitude, longitude);
+        final LatLonPoint point_shop = new LatLonPoint(orders.get(position).getPoi_lat(), orders.get(position).getPoi_lng());
+        final LatLonPoint point_client = new LatLonPoint(orders.get(position).getLat(), orders.get(position).getLng());
+        Distance.getDistance(point_me, point_shop, mContext, new RouteSearch.OnRouteSearchListener() {
+            @Override
+            public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                RideRouteResult mRideRouteResult = rideRouteResult;
+                final RidePath ridePath = mRideRouteResult.getPaths()
+                        .get(0);
+                float dis = ridePath.getDistance();
+                final String distance_shop = df.format(dis/1000);
+                Distance.getDistance(point_shop, point_client, mContext, new RouteSearch.OnRouteSearchListener() {
+                    @Override
+                    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                        RideRouteResult mRideRouteResult = rideRouteResult;
+                        final RidePath ridePath = mRideRouteResult.getPaths()
+                                .get(0);
+                        float dis = ridePath.getDistance();
+                        String distance_client = df.format(dis/1000);
+                        String str_distance = "我\t\t<font color='#28AAE3'>-" + distance_shop + "km-</font>\t\t取\t\t<font color='#28AAE3'>-" + distance_client + "km-</font>\t\t送";
+                        mViewHolder.distance.setText(Html.fromHtml(str_distance));
+                        mViewHolder.distributed.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                OkGo.post(API.BASEURL + "deliver/completedOrder/")
+                                        .tag(this)
+                                        .params("order_id", orders.get(position).getOrderid())
+                                        .params("distance",distance)
+                                        .params("price",orders.get(position).getPrice())
+                                        .params("timeout",timeout)
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onSuccess(String s, Call call, Response response) {
+                                                try {
+                                                    JSONObject jsonObject = new JSONObject(s);
+                                                    int errno = jsonObject.optInt("errno");
+                                                    String errmsg = jsonObject.optString("errmsg");
+                                                    if (errno == 200) {
+                                                        timer.cancel();
+                                                        ToastUtil.showToast(mContext, errmsg);
+                                                        orders.remove(position);
+                                                        notifyDataSetChanged();
+                                                    } else {
+                                                        ToastUtil.showToast(mContext, errmsg);
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
         mViewHolder.shop_name.setText(orders.get(position).getPoi_name());
         mViewHolder.sn.setText("#"+orders.get(position).getSn());
         mViewHolder.address_get.setText(orders.get(position).getPoi_addr());
@@ -200,38 +288,7 @@ public class DistributionOrderAdapter extends BaseAdapter {
             mViewHolder.paystate.setVisibility(View.GONE);
         }
         mViewHolder.total.setText(Html.fromHtml(str_total));
-        final String distance = df.format(AMapUtils.calculateLineDistance(latLng_shop, latLng_client) / 1000);
-        mViewHolder.distributed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OkGo.post(API.BASEURL + "deliver/completedOrder/")
-                        .tag(this)
-                        .params("order_id", orders.get(position).getOrderid())
-                        .params("distance",distance)
-                        .params("price",orders.get(position).getPrice())
-                        .params("timeout",timeout)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(s);
-                                    int errno = jsonObject.optInt("errno");
-                                    String errmsg = jsonObject.optString("errmsg");
-                                    if (errno == 200) {
-                                        timer.cancel();
-                                        ToastUtil.showToast(mContext, errmsg);
-                                        orders.remove(position);
-                                        notifyDataSetChanged();
-                                    } else {
-                                        ToastUtil.showToast(mContext, errmsg);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-            }
-        });
+
         mViewHolder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

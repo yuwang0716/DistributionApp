@@ -17,12 +17,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RidePath;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkRouteResult;
 import com.liuhesan.app.distributionapp.R;
 import com.liuhesan.app.distributionapp.bean.Order;
 import com.liuhesan.app.distributionapp.ui.personcenter.OrderDetailsActivity;
 import com.liuhesan.app.distributionapp.utility.API;
+import com.liuhesan.app.distributionapp.utility.Distance;
 import com.liuhesan.app.distributionapp.utility.ToastUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -64,14 +70,63 @@ public class ReseizeOrderAdapter extends RecyclerView.Adapter<ReseizeOrderAdapte
         final SharedPreferences sharedPreferences = mContext.getSharedPreferences("login",Context.MODE_PRIVATE);
         double latitude = Double.parseDouble(sharedPreferences.getString("latitude", "0.0"));
         double longitude = Double.parseDouble(sharedPreferences.getString("longitude", "0.0"));
-        LatLng latLng = new  LatLng(latitude, longitude);
-        LatLng latLng_shop = new LatLng(orders.get(position).getPoi_lat(), orders.get(position).getPoi_lng());
-        LatLng latLng_client = new LatLng(orders.get(position).getLat(), orders.get(position).getLng());
-        DecimalFormat df = new DecimalFormat("0.00");
-        String distance_shop = df.format(AMapUtils.calculateLineDistance(latLng, latLng_shop)/1000);
-        String distance_user = df.format(AMapUtils.calculateLineDistance(latLng_shop, latLng_client)/1000);
-        String str_distance = "我\t\t<font color='#28AAE3'>-" + distance_shop + "km-</font>\t\t取\t\t<font color='#28AAE3'>-" + distance_user + "km-</font>\t\t送";
-        holder.distance.setText(Html.fromHtml(str_distance));
+        final DecimalFormat df = new DecimalFormat("0.00");
+        LatLonPoint point_me = new LatLonPoint(latitude, longitude);
+        final LatLonPoint point_shop = new LatLonPoint(orders.get(position).getPoi_lat(), orders.get(position).getPoi_lng());
+        final LatLonPoint point_client = new LatLonPoint(orders.get(position).getLat(), orders.get(position).getLng());
+        Distance.getDistance(point_me, point_shop, mContext, new RouteSearch.OnRouteSearchListener() {
+            @Override
+            public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                RideRouteResult mRideRouteResult = rideRouteResult;
+                final RidePath ridePath = mRideRouteResult.getPaths()
+                        .get(0);
+                float dis = ridePath.getDistance();
+                final String distance_shop = df.format(dis/1000);
+                Distance.getDistance(point_shop, point_client, mContext, new RouteSearch.OnRouteSearchListener() {
+                    @Override
+                    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                        RideRouteResult mRideRouteResult = rideRouteResult;
+                        final RidePath ridePath = mRideRouteResult.getPaths()
+                                .get(0);
+                        float dis = ridePath.getDistance();
+                        String distance_client = df.format(dis/1000);
+                        String str_distance = "我\t\t<font color='#28AAE3'>-" + distance_shop + "km-</font>\t\t取\t\t<font color='#28AAE3'>-" + distance_client + "km-</font>\t\t送";
+                        holder.distance.setText(Html.fromHtml(str_distance));
+                    }
+                });
+            }
+        });
+
         holder.shop_name.setText(orders.get(position).getPoi_name());
         holder.sn.setText("#"+orders.get(position).getSn());
         holder.address_get.setText(orders.get(position).getPoi_addr());

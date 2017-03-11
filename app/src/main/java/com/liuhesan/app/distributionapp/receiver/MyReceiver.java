@@ -28,10 +28,14 @@ public class MyReceiver extends BroadcastReceiver {
 	private LocalBroadcastManager localBroadcastManager;
 	private Intent intent;
 	@Override
-	public void onReceive(final Context context, final Intent intent) {
-        final Bundle bundle = intent.getExtras();
+	public void onReceive(Context context,Intent intent) {
+        Bundle bundle = intent.getExtras();
 		SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("login", Context.MODE_PRIVATE);
 		String id = sharedPreferences.getString("id", "");
+		registerReceiver(bundle,id,context,intent);
+	}
+
+	private void registerReceiver(final Bundle bundle, final String id, final Context context, final Intent intent) {
 		JPushInterface.setAlias(MyApplication.getInstance(), id, new TagAliasCallback() {
 			@Override
 			public void gotResult(int i, String s, Set<String> set) {
@@ -41,12 +45,13 @@ public class MyReceiver extends BroadcastReceiver {
 						Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
 						processCustomMessage(context, bundle);
 					}
+				}else {
+					registerReceiver(bundle,id,context,intent);
 				}
 			}
 		});
-
 	}
-	
+
 
 	private void processCustomMessage(Context context, Bundle bundle) {
 			localBroadcastManager = LocalBroadcastManager.getInstance(context);

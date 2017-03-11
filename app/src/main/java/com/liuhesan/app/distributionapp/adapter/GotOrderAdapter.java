@@ -17,12 +17,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RidePath;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkRouteResult;
 import com.liuhesan.app.distributionapp.R;
 import com.liuhesan.app.distributionapp.bean.Order;
-import com.liuhesan.app.distributionapp.utility.API;
 import com.liuhesan.app.distributionapp.ui.personcenter.OrderDetailsActivity;
+import com.liuhesan.app.distributionapp.utility.API;
+import com.liuhesan.app.distributionapp.utility.Distance;
 import com.liuhesan.app.distributionapp.utility.ToastUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -35,6 +41,8 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static com.liuhesan.app.distributionapp.R.id.distance;
 
 /**
  * Created by Tao on 2016/12/20.
@@ -67,12 +75,12 @@ public class GotOrderAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder mViewHolder ;
+        final ViewHolder mViewHolder ;
         if (convertView == null) {
                 convertView = View.inflate(mContext, R.layout.item_takinggoods, null);
             mViewHolder = new ViewHolder();
 
-            mViewHolder.distance = (TextView) convertView.findViewById(R.id.distance);
+            mViewHolder.distance = (TextView) convertView.findViewById(distance);
             mViewHolder.details = (TextView) convertView.findViewById(R.id.details);
             mViewHolder.shop_name = (TextView) convertView.findViewById(R.id.shop_name);
             mViewHolder.sn = (TextView) convertView.findViewById(R.id.sn);
@@ -93,14 +101,62 @@ public class GotOrderAdapter extends BaseAdapter {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences("login",Context.MODE_PRIVATE);
         double latitude = Double.parseDouble(sharedPreferences.getString("latitude", "0.0"));
         double longitude = Double.parseDouble(sharedPreferences.getString("longitude", "0.0"));
-        LatLng latLng_me = new LatLng(latitude, longitude);
-        LatLng latLng_shop= new LatLng(orders.get(position).getPoi_lat(), orders.get(position).getPoi_lng());
-        LatLng latLng_client = new LatLng(orders.get(position).getLat(), orders.get(position).getLng());
-        DecimalFormat df = new DecimalFormat("0.00");
-        String distance_shop = df.format(AMapUtils.calculateLineDistance(latLng_me, latLng_shop)/1000);
-        String distance_user = df.format(AMapUtils.calculateLineDistance(latLng_shop, latLng_client)/1000);
-        String str_distance = "我\t\t<font color='#28AAE3'>-" + distance_shop + "m-</font>\t\t取\t\t<font color='#28AAE3'>-" + distance_user + "m-</font>\t\t送";
-        mViewHolder.distance.setText(Html.fromHtml(str_distance));
+        final DecimalFormat df = new DecimalFormat("0.00");
+        LatLonPoint point_me = new LatLonPoint(latitude, longitude);
+        final LatLonPoint point_shop = new LatLonPoint(orders.get(position).getPoi_lat(), orders.get(position).getPoi_lng());
+        final LatLonPoint point_client = new LatLonPoint(orders.get(position).getLat(), orders.get(position).getLng());
+        Distance.getDistance(point_me, point_shop, mContext, new RouteSearch.OnRouteSearchListener() {
+            @Override
+            public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                RideRouteResult mRideRouteResult = rideRouteResult;
+                final RidePath ridePath = mRideRouteResult.getPaths()
+                        .get(0);
+                float dis = ridePath.getDistance();
+                final String distance_shop = df.format(dis/1000);
+                Distance.getDistance(point_shop, point_client, mContext, new RouteSearch.OnRouteSearchListener() {
+                    @Override
+                    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+                    }
+
+                    @Override
+                    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                        RideRouteResult mRideRouteResult = rideRouteResult;
+                        final RidePath ridePath = mRideRouteResult.getPaths()
+                                .get(0);
+                        float dis = ridePath.getDistance();
+                        String distance_client = df.format(dis/1000);
+                        String str_distance = "我\t\t<font color='#28AAE3'>-" + distance_shop + "km-</font>\t\t取\t\t<font color='#28AAE3'>-" + distance_client + "km-</font>\t\t送";
+                        mViewHolder.distance.setText(Html.fromHtml(str_distance));
+                    }
+                });
+            }
+        });
         mViewHolder.shop_name.setText(orders.get(position).getPoi_name());
         mViewHolder.sn.setText("#"+orders.get(position).getSn());
         mViewHolder.address_get.setText(orders.get(position).getPoi_addr());

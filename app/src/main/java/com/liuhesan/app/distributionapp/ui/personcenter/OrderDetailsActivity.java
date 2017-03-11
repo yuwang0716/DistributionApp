@@ -14,13 +14,19 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RidePath;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkRouteResult;
 import com.liuhesan.app.distributionapp.R;
 import com.liuhesan.app.distributionapp.adapter.DetailsOrderAdapter;
 import com.liuhesan.app.distributionapp.bean.DetailsOrder;
 import com.liuhesan.app.distributionapp.utility.API;
 import com.liuhesan.app.distributionapp.utility.DetailsOrderJson;
+import com.liuhesan.app.distributionapp.utility.Distance;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -167,17 +173,64 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                                 double latitude = Double.parseDouble(sharedPreferences.getString("latitude", "0.0"));
                                 double longitude = Double.parseDouble(sharedPreferences.getString("longitude", "0.0"));
 
-                                LatLng latLng_me = new LatLng(latitude, longitude);
-                                LatLng latLng_shop = new LatLng(detailsOrder.getWm_poi_latitude(), detailsOrder.getWm_poi_longitude());
-                                LatLng latLng_client = new LatLng(detailsOrder.getLatitude(),detailsOrder.getLongitude());
+                                final DecimalFormat df = new DecimalFormat("0.00");
+                                LatLonPoint point_me = new LatLonPoint(latitude, longitude);
+                                final LatLonPoint point_shop = new LatLonPoint(detailsOrder.getWm_poi_latitude(), detailsOrder.getWm_poi_longitude());
+                                final LatLonPoint point_client = new LatLonPoint(detailsOrder.getLatitude(),detailsOrder.getLongitude());
+                                Distance.getDistance(point_me, point_shop, OrderDetailsActivity.this, new RouteSearch.OnRouteSearchListener() {
+                                    @Override
+                                    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
 
-                                DecimalFormat df = new DecimalFormat("0.00");
-                                String distance_shop = df.format(AMapUtils.calculateLineDistance(latLng_me, latLng_shop)/1000);
-                                String distance_client = df.format(AMapUtils.calculateLineDistance(latLng_shop,latLng_client )/1000);
-                                String str_distance = "距我<font color='#28AAE3'>" + distance_shop + "km</font>";
-                                tv_details_distance_shop.setText(Html.fromHtml(str_distance));
-                                str_distance = "商家距客户<font color='#28AAE3'>" + distance_client + "km</font>";
-                                tv_details_distance_customer.setText(Html.fromHtml(str_distance));
+                                    }
+
+                                    @Override
+                                    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+                                    }
+
+                                    @Override
+                                    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+                                    }
+
+                                    @Override
+                                    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                                        RideRouteResult mRideRouteResult = rideRouteResult;
+                                        final RidePath ridePath = mRideRouteResult.getPaths()
+                                                .get(0);
+                                        float dis = ridePath.getDistance();
+                                        final String distance_shop = df.format(dis/1000);
+                                        String str_distance = "距我<font color='#28AAE3'>" + distance_shop + "km</font>";
+                                        tv_details_distance_shop.setText(Html.fromHtml(str_distance));
+                                    }
+                                });
+                                Distance.getDistance(point_shop, point_client, OrderDetailsActivity.this, new RouteSearch.OnRouteSearchListener() {
+                                    @Override
+                                    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+                                    }
+
+                                    @Override
+                                    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+                                    }
+
+                                    @Override
+                                    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+                                    }
+
+                                    @Override
+                                    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+                                        RideRouteResult mRideRouteResult = rideRouteResult;
+                                        final RidePath ridePath = mRideRouteResult.getPaths()
+                                                .get(0);
+                                        float dis = ridePath.getDistance();
+                                        String distance_client = df.format(dis/1000);
+                                        String str_distance = "商家距客户<font color='#28AAE3'>" + distance_client + "km</font>";
+                                        tv_details_distance_customer.setText(Html.fromHtml(str_distance));
+                                    }
+                                });
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -1,14 +1,21 @@
 package com.liuhesan.app.distributionapp.ui.personcenter;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -69,9 +76,26 @@ public class MainActivity extends AppCompatActivity {
     private double longitude;
     private Timer timer;
     private TimerTask timerTask;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 457;
+    private Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //获取权限
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED &&ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED ) {
+
+        } else {
+            // 没有赋予权限，那就去申请权限
+            getPermission();
+        }
         setContentView(R.layout.activity_main);
         intentFilter = new IntentFilter();
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
@@ -209,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         localBroadcastManager.unregisterReceiver(localReceive);
         localBroadcastManager.unregisterReceiver(locationReceive);
+        if (dialog != null)
+            dialog.dismiss();
     }
 
     @Override
@@ -246,37 +272,20 @@ public class MainActivity extends AppCompatActivity {
         mLocationOption = new AMapLocationClientOption();
         // 使用连续
         mLocationOption.setOnceLocation(false);
+        mLocationOption.setLocationCacheEnable(false);
         // 每10秒定位一次
-        mLocationOption.setInterval(1000);
+        mLocationOption.setInterval(20000);
         mLocationOption.setHttpTimeOut(30000);
         // 地址信息
         mLocationOption.setNeedAddress(true);
-        mLocationOption.setLocationCacheEnable(false);
+
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.setLocationListener(locationListener);
         mLocationClient.startLocation();
         timer = new Timer();
-        timerTask = new TimerTask() {
 
-            @Override
-            public void run() {
-                if (latitude != 0 && longitude != 0) {
-                    if (isLocation){
-                        OkGo.post(API.BASEURL + "deliver/logSteps/")
-                                .tag(this)
-                                .params("latitude", latitude)
-                                .params("longitude", longitude)
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(String s, Call call, Response response) {
-                                    }
-                                });
-                    }
 
-                }
-            }
-        };
     }
     /**
      * 停止定位
@@ -290,20 +299,40 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
             if (null != aMapLocation) {
-                if (aMapLocation.getErrorCode() == 0) {
-                    latitude = aMapLocation.getLatitude();
-                    longitude = aMapLocation.getLongitude();
-                    DecimalFormat df = new DecimalFormat("0.0000");
-                    latitude = Double.parseDouble(df.format(latitude));
-                    longitude = Double.parseDouble(df.format(longitude));
-                    SharedPreferences sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor edit = sharedPreferences.edit();
-                    edit.putString("latitude", Double.toString(latitude));
-                    edit.putString("longitude", Double.toString(longitude));
-                    edit.commit();
-                        timer.schedule(timerTask,1000,10000);
+                if (aMapLocation.getErrorCode() == AMapLocation.LOCATION_SUCCESS) {
+                    Log.e(TAG, longitude+"onLocationChanged: " +aMapLocation.getAccuracy());
+                    if (aMapLocation.getAccuracy() < 30){
+                        latitude = aMapLocation.getLatitude();
+                        longitude = aMapLocation.getLongitude();
+                        DecimalFormat df = new DecimalFormat("0.0000");
+                        latitude = Double.parseDouble(df.format(latitude));
+                        longitude = Double.parseDouble(df.format(longitude));
+                        SharedPreferences sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor edit = sharedPreferences.edit();
+                        edit.putString("latitude", Double.toString(latitude));
+                        edit.putString("longitude", Double.toString(longitude));
+                        edit.commit();
+                        timerTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (latitude != 0.0 && longitude != 0.0) {
+                                    if (isLocation){
+                                        OkGo.post(API.BASEURL + "deliver/logSteps/")
+                                                .tag(this)
+                                                .params("latitude", latitude)
+                                                .params("longitude", longitude)
+                                                .execute(new StringCallback() {
+                                                    @Override
+                                                    public void onSuccess(String s, Call call, Response response) {
+                                                    }
+                                                });
+                                    }
 
-
+                                }
+                            }
+                        };
+                        timer.schedule(timerTask,1000,600000);
+                    }
                 } else {
                     Log.e("AmapError", "location Error, ErrCode:"
                             + aMapLocation.getErrorCode() + ", errInfo:"
@@ -315,4 +344,38 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    private void getPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.CALL_PHONE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION},
+                REQUEST_WRITE_EXTERNAL_STORAGE);
+    }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+                    // 权限请求成功
+
+                } else {
+                    // 用户拒绝了
+                    showTipDialog();
+                }
+                break;
+
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    private void showTipDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setMessage("该程序需要该权限，否则无法正常运行")
+                .setPositiveButton(android.R.string.ok, null)
+                .create();
+        dialog = builder.show();
+    }
+
 }
